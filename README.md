@@ -15,19 +15,25 @@ Add or change files in the repo for use with NCRF
 
 4. Once your PR is merged, ask a maintainer to cut a new release of the testing data, e.g. 0.53.
 
-5. In NCRF, update `ncrf/testing/fetch.py` to:
+5. In NCRF, update `ncrf/tests/fetch.py` to:
    
-   1. Change the `RELEASE` in `ncrf/testing/fetch.py` to the new version.
+   1. Change the `RELEASE` in `ncrf/tests/fetch.py` to the new version.
 
-   2. Set the new hash. This can be easily done by either:
+   2. Set `known_hash` to the new SHA-256 hash, as `"sha256:<hash>"`. This can be easily done by either:
    
-      1. Downloading and running `md5sum` on this (with the proper version number):
+      1. Downloading and running `shasum -a 256` (or `sha256sum`) on this (with the proper version number):
 
-         https://codeload.github.com/proloyd/NCRF-testing-data/tar.gz/0.1
+         https://codeload.github.com/proloyd/NCRF-testing-data/tar.gz/0.3
 
          or
 
       2. Force-updating the repo and looking at the error message (as it gives the new true hash), e.g.:
 
-             $ python -c "import ncrf; ncrf.fetch_testing_dataset(force_download=True)"
+             $ python -c "from ncrf.tests.fetch import fetch_dataset; fetch_dataset(force_download=True)"
+
+Source space
+------------
+The source space of `fwd_sol` stores its `subjects_dir` relative to the dataset (`subjects`).
+NCRF resolves it against the download directory, and on first use of the source coordinates
+fetches fsaverage there and generates the `vol-7` source space; it is not part of this repo.
 
